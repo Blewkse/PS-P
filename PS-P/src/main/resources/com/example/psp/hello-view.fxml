@@ -10,16 +10,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.HBox?>
 <StackPane styleClass="box" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.example.psp.HelloController" stylesheets="@style/home.css" fx:id="stackPaneHome" >
+           fx:controller="com.example.psp.HomeController" stylesheets="@style/home.css" fx:id="stackPaneHome" >
     <HBox alignment="CENTER" fx:id="buttonHbox" >
-        <Button text="Programmer la Galaxia" styleClass="buttonLeft" contentDisplay="TOP">
+        <Button text="Programmer la Galaxia" fx:id="buttonProgram" styleClass="buttonLeft" contentDisplay="TOP">
             <graphic>
                 <ImageView fitHeight="50" fitWidth="50">
                     <Image url="@icons/Logo_Site_Web.png" fx:id="imageBoutonLeft"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button text="Mettre à jour la carte" styleClass="buttonRight" contentDisplay="TOP">
+        <Button text="Mettre à jour la carte" styleClass="buttonRight" fx:id="buttonUpdateCart" contentDisplay="TOP">
             <graphic>
                 <ImageView fitHeight="50" fitWidth="50">
                     <Image url="@icons/Logo_Site_Web.png" fx:id="imageBoutonRight"/>
