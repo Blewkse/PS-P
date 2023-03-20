@@ -1,0 +1,15 @@
+
+
+.box{
+-fx-background-color: red;
+
+}
+
+#imageBoutonLeft{
+    -fx-max-width: 50;
+    -fx-max-height: 50;
+}
+
+.buttonLeft{
+    -fx-font-family: Bahnschrift;
+}
