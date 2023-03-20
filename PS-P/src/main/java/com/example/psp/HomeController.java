@@ -40,7 +40,9 @@ public class HomeController implements Initializable {
         buttonProgram.setOnAction((event)  -> {
             FXMLLoader fxmlLoader = new FXMLLoader(HomeController.class.getResource("galaxia-website.fxml"));
             try {
-               Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+               Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+                WebviewController webviewController = fxmlLoader.getController();
+                webviewController.setStage(stage);
                 stage.setTitle("Programmation de la galaxia");
                 stage.setScene(scene);
             } catch (IOException e) {

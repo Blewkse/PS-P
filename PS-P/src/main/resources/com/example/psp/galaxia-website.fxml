@@ -7,10 +7,16 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.web.WebView?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<StackPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.psp.WebviewController"
-            prefHeight="400.0" prefWidth="600.0">
-    <TextArea text="coucou"/>
-
-</AnchorPane>
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@style/galaxiaWebsite.css"
+            styleClass="body">
+    <VBox alignment="CENTER">
+        <Button text="Retour" styleClass="bouton" fx:id="boutonRetour"/>
+        <HBox alignment="CENTER">
+            <WebView fx:id="webView" minWidth="1200"/>
+        </HBox>
+    </VBox>
+</StackPane>
