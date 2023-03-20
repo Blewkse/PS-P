@@ -1,5 +1,6 @@
 package com.example.psp;
 
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +28,14 @@ public class WebviewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         webEngine = webView.getEngine();
         webEngine.load("https://play.thingz.co/galaxia");
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
+                System.out.println("alal");
+                String script = "alert('Page loaded successfully!');";
+                webEngine.executeScript(script);
+
+        });
+
+
         boutonRetour.setOnAction((event) -> {
             FXMLLoader fxmlLoader = new FXMLLoader(WebviewController.class.getResource("hello-view.fxml"));
             try {
