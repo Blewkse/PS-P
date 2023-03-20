@@ -23,15 +23,24 @@ public class WebviewController implements Initializable {
 
     @FXML
     private Button boutonRetour;
+    @FXML
+    private Button bouton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         webEngine = webView.getEngine();
         webEngine.load("https://play.thingz.co/galaxia");
+        webEngine.setJavaScriptEnabled(true);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-                System.out.println("alal");
+            System.out.println(webEngine.getLoadWorker().stateProperty().toString());
+            if(webEngine.getLoadWorker().stateProperty().getValue() == Worker.State.SUCCEEDED){
+                webEngine.executeScript("console.log('Ouvrir la console.');");
                 String script = "alert('Page loaded successfully!');";
                 webEngine.executeScript(script);
+                System.out.println("in");
+
+            }
+
 
         });
 
@@ -47,6 +56,13 @@ public class WebviewController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }});
+        bouton.setOnAction((event) -> {
+            System.out.println(webEngine.getLoadWorker().stateProperty().getValue());
+            String script = "document.querySelector('button[title   =\"Tu es connecté au serveur de création de Thingz\"]').id = 'mon-bouton';";
+            webEngine.executeScript(script);
+            //webEngine.executeScript("document.getElementById('mon-bouton').style.backgroundColor = 'green'");
+//*[@id="HeaderFreeCreationMenu"]/div/div[2]/div[1]/div/button
+        });
     }
 
     public void setStage(Stage stage){
