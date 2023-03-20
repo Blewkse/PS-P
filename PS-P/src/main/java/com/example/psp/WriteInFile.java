@@ -14,7 +14,7 @@ import java.util.List;
 public class WriteInFile {
     public static void main(String[] args) {
         String targetVolumeLabel = "GALAXIA"; // Replace this with the volume label of your target device
-        String fileName = "/writein.py";
+        String fileName = "/labite.py";
         String fileContent = "# This is a Python file created by Java\nprint('Hello, world!')";
         String osName = System.getProperty("os.name").toLowerCase();
         boolean isDeviceFound = false;
@@ -23,7 +23,7 @@ public class WriteInFile {
             List<Path> removableDevices = new ArrayList<>();
 
             if (osName.contains("win")) {
-                removableDevices = getWindowsRemovableDevices();
+                removableDevices = getWindowsRemovableDevices(targetVolumeLabel);
             } else if (osName.contains("mac")) {
                 removableDevices = getMacRemovableDevices(targetVolumeLabel);
             } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("aix")) {
@@ -34,9 +34,9 @@ public class WriteInFile {
             }
 
             for (Path deviceRoot : removableDevices) {
-                String deviceLabel = deviceRoot.getFileName().toString();
+                String deviceLabel = deviceRoot.toString();
 
-                if (deviceLabel.equalsIgnoreCase(targetVolumeLabel)) {
+               // if (deviceLabel.equalsIgnoreCase(targetVolumeLabel)) {
                     isDeviceFound = true;
                     System.out.println("Device found: " + deviceRoot);
 
@@ -50,7 +50,7 @@ public class WriteInFile {
                     }
                     break;
                 }
-            }
+           // }
 
             if (!isDeviceFound) {
                 System.out.println("No removable device found with volume label: " + targetVolumeLabel);
@@ -59,7 +59,7 @@ public class WriteInFile {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        try {
+        /*try {
             String portName = getPortName(osName);
             //Path Mac Selmene
             String firmwarePath = "/Users/selmene/Developer/www/ynov/Desktop/PS-P/FirmToFlash/firmware-1-0-beta-28-pcb-1-0-3.bin";
@@ -121,10 +121,10 @@ public class WriteInFile {
             System.out.println("Unsupported operating system.");
         }
         return portName;
-
+*/
     }
 
-    private static List<Path> getWindowsRemovableDevices() throws IOException, InterruptedException {
+    private static List<Path> getWindowsRemovableDevices(String targetVolumeLabel) throws IOException, InterruptedException {
         List<Path> devices = new ArrayList<>();
         ProcessBuilder pb = new ProcessBuilder("wmic", "logicaldisk", "where", "drivetype=2", "get", "deviceid,volumename");
         Process process = pb.start();
@@ -132,10 +132,10 @@ public class WriteInFile {
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
         while ((line = reader.readLine()) != null) {
-            if (!line.trim().isEmpty() && !line.startsWith("DeviceID")) {
+            if (!line.trim().isEmpty() && !line.startsWith("DeviceID") && line.contains(targetVolumeLabel)) {
                 String[] parts = line.trim().split("\\s+");
                 if (parts.length >= 2) {
-                    devices.add(Paths.get(parts[0] + "\\" + parts[1]));
+                    devices.add(Paths.get(parts[0]));
                 }
             }
         }
