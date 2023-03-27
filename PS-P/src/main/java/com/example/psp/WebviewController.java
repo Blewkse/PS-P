@@ -35,10 +35,18 @@ public class WebviewController implements Initializable {
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             System.out.println(webEngine.getLoadWorker().stateProperty().toString());
             if(webEngine.getLoadWorker().stateProperty().getValue() == Worker.State.SUCCEEDED){
-                webEngine.executeScript("console.log('Ouvrir la console.');");
-                String script = "alert('Page loaded successfully!');";
-                webEngine.executeScript(script);
-                System.out.println("in");
+                bouton.setOnAction((event) -> {
+                    System.out.println(webEngine.getLoadWorker().stateProperty().getValue());
+                    String script = "document.querySelector('div[title=\"Tu es connecté au serveur de création de Thingz\"]')";
+                    String script2 = "document.querySelector('div[title=\"Tu es connecté au serveur de création de Thingz\"]').style.backgroundColor = 'red'";
+                    Object result = webEngine.executeScript(script);
+                    if (result instanceof  JSObject){
+                        System.out.println(result);
+                        Object result2 = webEngine.executeScript(script2);
+                        webEngine.executeScript("document.getElementById('HeaderFreeCreationMenu').style.backgroundColor = 'green'");
+                    }
+//*[@id="HeaderFreeCreationMenu"]/div/div[2]/div[1]/div/button
+                });
             }
 
             setTimeout(() -> {if(webEngine.getLoadWorker().stateProperty().getValue() == Worker.State.RUNNING)
@@ -64,13 +72,7 @@ public class WebviewController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }});
-        bouton.setOnAction((event) -> {
-            System.out.println(webEngine.getLoadWorker().stateProperty().getValue());
-            String script = "document.querySelector('button[title   =\"Tu es connecté au serveur de création de Thingz\"]').id = 'mon-bouton';";
-            //webEngine.executeScript(script);
-            //webEngine.executeScript("document.getElementById('mon-bouton').style.backgroundColor = 'green'");
-//*[@id="HeaderFreeCreationMenu"]/div/div[2]/div[1]/div/button
-        });
+
     }
 
     public void setStage(Stage stage){
