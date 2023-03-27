@@ -19,7 +19,7 @@ public class WriteInFile {
         String osName = System.getProperty("os.name").toLowerCase();
         boolean isDeviceFound = false;
 
-        try {
+        /* try {
             List<Path> removableDevices = new ArrayList<>();
 
             if (osName.contains("win")) {
@@ -58,13 +58,17 @@ public class WriteInFile {
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        }
-        /*try {
+        } */
+        try {
             String portName = getPortName(osName);
+            String espToolWin = "C:/Users/jules/Downloads/esptool-v4.5.1-win64/esptool-v4.5.1-win64/esptool.exe";
             //Path Mac Selmene
-            String firmwarePath = "/Users/selmene/Developer/www/ynov/Desktop/PS-P/FirmToFlash/firmware-1-0-beta-28-pcb-1-0-3.bin";
-            String[] command = {"esptool.py", "--port", "/dev/" + portName, "write_flash", "0x0000", firmwarePath};
+            // String firmwarePath = "/Users/selmene/Developer/www/ynov/Desktop/PS-P/FirmToFlash/firmware-1-0-beta-28-pcb-1-0-3.bin";
+            String firmwarePath = "C://Users//jules//Downloads//firmware-1-0-beta-28-pcb-1-0-3.bin";
+            String[] command = {espToolWin, "--port", portName, "write_flash", "0x0000", firmwarePath};
+            System.out.println(Arrays.toString(command));
             ProcessBuilder pb = new ProcessBuilder(command);
+
             pb.redirectErrorStream(true); // Combine standard output and error output
             Process process = pb.start();
             process.waitFor(); // Wait for the process to finish executing
@@ -94,14 +98,14 @@ public class WriteInFile {
                 }
             }
         } else if (osName.contains("win")) {
-            // Windows-specific code to get the port name
-            ProcessBuilder pb = new ProcessBuilder("mode");
+            ProcessBuilder pb = new ProcessBuilder("wmic", "path", "Win32_SerialPort", "get", "DeviceID");
+            pb.redirectErrorStream(true); // Combine standard output and error output
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("COM")) {
-                    portName = line.split(":")[0].trim();
+                if (line.contains("COM5")) {
+                    portName = line.trim();
                     break;
                 }
             }
@@ -121,7 +125,7 @@ public class WriteInFile {
             System.out.println("Unsupported operating system.");
         }
         return portName;
-*/
+
     }
 
     private static List<Path> getWindowsRemovableDevices(String targetVolumeLabel) throws IOException, InterruptedException {
