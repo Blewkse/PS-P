@@ -31,10 +31,10 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         Path pathMac = Paths.get("/volumes/GALAXIA");
+
         Path pathWin = Paths.get("E:");
         String fileName = "/example.py";
         String fileContent = "# This is a Python file created by Java\nprint('Hello, world!')";
-
 
         if (IS_WINDOWS) {
             if (Files.exists(pathWin)) {

@@ -1,15 +1,14 @@
 package com.example.psp;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.fazecast.jSerialComm.SerialPort;
 
 public class WriteInFile {
     public static void main(String[] args) {
@@ -61,21 +60,34 @@ public class WriteInFile {
         } */
         try {
             String portName = getPortName(osName);
-            String espToolWin = "C:/Users/jules/Downloads/esptool-v4.5.1-win64/esptool-v4.5.1-win64/esptool.exe";
-            //Path Mac Selmene
-            // String firmwarePath = "/Users/selmene/Developer/www/ynov/Desktop/PS-P/FirmToFlash/firmware-1-0-beta-28-pcb-1-0-3.bin";
-            String firmwarePath = "C://Users//jules//Downloads//firmware-1-0-beta-28-pcb-1-0-3.bin";
-            String[] command = {espToolWin, "--port", portName, "write_flash", "0x0000", firmwarePath};
-            System.out.println(Arrays.toString(command));
-            ProcessBuilder pb = new ProcessBuilder(command);
-
-            pb.redirectErrorStream(true); // Combine standard output and error output
-            Process process = pb.start();
-            process.waitFor(); // Wait for the process to finish executing
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+            if (osName.contains("mac")) {
+                //Path Mac Selmene
+                String firmwarePath = "/Users/selmene/Developer/www/ynov/Desktop/PS-P/FirmToFlash/firmware-1-0-beta-28-pcb-1-0-3.bin";
+                String[] command = {"esptool.py", "--port", "/dev/" + portName, "write_flash", "0x0000", firmwarePath};
+                System.out.println(Arrays.toString(command));
+                ProcessBuilder pb = new ProcessBuilder(command);
+                pb.redirectErrorStream(true); // Combine standard output and error output
+                Process process = pb.start();
+                process.waitFor(); // Wait for the process to finish executing
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } else if (osName.contains("win")) {
+                String espToolWin = "C:/Users/jules/Downloads/esptool-v4.5.1-win64/esptool-v4.5.1-win64/esptool.exe";
+                String firmwarePath = "C://Users//jules//Downloads//firmware-1-0-beta-28-pcb-1-0-3.bin";
+                String[] command = {espToolWin, "--port", portName, "write_flash", "0x0000", firmwarePath};
+                System.out.println(Arrays.toString(command));
+                ProcessBuilder pb = new ProcessBuilder(command);
+                pb.redirectErrorStream(true); // Combine standard output and error output
+                Process process = pb.start();
+                process.waitFor(); // Wait for the process to finish executing
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
